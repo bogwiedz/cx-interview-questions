@@ -30,7 +30,7 @@ func TestBasicBasket1(t *testing.T) {
 			Discount: 25,
 		},
 	}
-	pricer, _ := Calculate(offer, basicCatalogue, &Basket{
+	pricer, _ := Calculate(offer, basicCatalogue, Basket{
 		"Baked Beans": 4,
 		"Biscuits":    1,
 	})
@@ -50,7 +50,7 @@ func TestBasicBasket2(t *testing.T) {
 			Discount: 25,
 		},
 	}
-	pricer, _ := Calculate(offer, basicCatalogue, &Basket{
+	pricer, _ := Calculate(offer, basicCatalogue, Basket{
 		"Baked Beans": 2,
 		"Biscuits":    1,
 		"Sardines":    2,
@@ -71,7 +71,7 @@ func TestBuyPack1(t *testing.T) {
 			Discount: 25,
 		},
 	}
-	pricer, _ := Calculate(offer, basicCatalogue, &Basket{
+	pricer, _ := Calculate(offer, basicCatalogue, Basket{
 		"Biscuits":        11,
 		"Shampoo (Small)": 4,
 	})
@@ -79,4 +79,24 @@ func TestBuyPack1(t *testing.T) {
 	assert(t, 2120, int(pricer.SubTotal*100+0.5), "Sub-Total")
 	assert(t, 240, int(pricer.Discount*100+0.5), "Discount")
 	assert(t, 1880, int(pricer.Total*100+0.5), "Total")
+}
+
+func TestBuyPack2(t *testing.T) {
+	offer := Offer{
+		"Biscuits": OfferItem{
+			Buy:  3,
+			Free: 2,
+		},
+		"Sardines": OfferItem{
+			Discount: 25,
+		},
+	}
+	pricer, _ := Calculate(offer, basicCatalogue, Basket{
+		"Biscuits":        11,
+		"Shampoo (Small)": 4,
+	})
+
+	assert(t, 2120, int(pricer.SubTotal*100+0.5), "Sub-Total")
+	assert(t, 480, int(pricer.Discount*100+0.5), "Discount")
+	assert(t, 1640, int(pricer.Total*100+0.5), "Total")
 }
